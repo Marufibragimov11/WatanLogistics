@@ -6,7 +6,7 @@ import { CheckCircle2, Award, Zap, TrendingUp } from "lucide-react";
 const benefits = [
     {
         title: "Maximum Profitability",
-        description: "We negotiate for top dollar on every load, ensuring your trucks stay busy and profitable.",
+        description: "We negotiate for top dollar on every load, ensuring our trucks stay busy and profitable.",
         icon: <TrendingUp className="text-primary-crimson" size={24} />,
     },
     {

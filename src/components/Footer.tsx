@@ -55,7 +55,7 @@ export default function Footer() {
                         <ul className="space-y-4 text-sm text-steel-gray">
                             <li className="flex items-start gap-3">
                                 <span className="text-primary-crimson font-bold">P:</span>
-                                <span>216-202-5556</span>
+                                <span>+1 (216) 202-5556</span>
                             </li>
                             <li className="flex items-start gap-3">
                                 <span className="text-primary-crimson font-bold">E:</span>

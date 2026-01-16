@@ -34,7 +34,7 @@ export default function Contact() {
                                 </div>
                                 <div>
                                     <p className="text-sm text-steel-gray">Phone Number</p>
-                                    <p className="text-lg font-bold hover:text-primary-crimson transition-colors">216-202-5556</p>
+                                    <p className="text-lg font-bold hover:text-primary-crimson transition-colors">+1 (216) 202-5556</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-6 group">
@@ -51,7 +51,7 @@ export default function Contact() {
                                     <MapPin className="text-primary-crimson" size={20} />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-steel-gray">Headquarters</p>
+                                    <p className="text-sm text-steel-gray">Company Address</p>
                                     <p className="text-lg font-bold">81 Colonial Hills Dr, Akron, OH 44310</p>
                                 </div>
                             </div>
@@ -93,8 +93,8 @@ export default function Contact() {
                             <div className="space-y-2">
                                 <label className="text-xs font-bold uppercase tracking-widest text-steel-gray ml-1">Inquiry Type</label>
                                 <select className="w-full bg-black/50 border border-white/10 rounded-xl px-6 py-4 focus:outline-none focus:border-primary-crimson transition-colors text-white appearance-none cursor-pointer">
-                                    <option className="bg-black">Dispatch Services</option>
-                                    <option className="bg-black">Load Booking</option>
+                                    <option className="bg-black">Driver hiring</option>
+                                    <option className="bg-black">Managing company</option>
                                     <option className="bg-black">Driver Career</option>
                                     <option className="bg-black">Other</option>
                                 </select>
@@ -114,7 +114,7 @@ export default function Contact() {
                                     type="button"
                                     className="w-full bg-primary-crimson text-white font-bold py-5 rounded-xl shadow-lg shadow-primary-crimson/20 flex items-center justify-center gap-3 group"
                                 >
-                                    Send Inquiry Now
+                                    Apply Now
                                     <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                 </motion.button>
                             </div>

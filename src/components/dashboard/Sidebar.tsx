@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
     LayoutDashboard,
@@ -10,22 +10,25 @@ import {
     MapPin,
     Settings,
     LogOut,
-    FileText
+    FileText,
+    Contact2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "User Management", href: "/dashboard/users", icon: Users },
-    { name: "Dispatch Board", href: "/dashboard/dispatch", icon: MapPin },
     { name: "Fleet Management", href: "/dashboard/fleet", icon: Truck },
+    { name: "Drivers", href: "/dashboard/drivers", icon: Contact2 },
+    { name: "Dispatch Board", href: "/dashboard/dispatch", icon: MapPin },
     { name: "Load History", href: "/dashboard/loads", icon: FileText },
     { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
 export default function Sidebar() {
     const pathname = usePathname();
-    const [role, setRole] = useState<string | null>(null); // Added state for role
+    const router = useRouter();
+    const [role, setRole] = useState<string | null>(null);
 
     useEffect(() => {
         const storedRole = localStorage.getItem("userRole");
@@ -36,8 +39,20 @@ export default function Sidebar() {
         if (link.name === "User Management") {
             return role === "admin";
         }
+        if (link.name === "Drivers") {
+            return role !== "driver";
+        }
         return true;
     });
+
+    const handleSignOut = () => {
+        // Clear local storage
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userRole");
+
+        // Redirect to login page
+        router.push("/login");
+    };
 
     return (
         <aside className="w-64 bg-[#0F0F14] border-r border-white/10 flex flex-col h-screen sticky top-0">
@@ -54,7 +69,7 @@ export default function Sidebar() {
 
             <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
                 <div className="text-xs font-bold text-steel-gray uppercase tracking-widest px-4 mb-2 mt-4">Overview</div>
-                {filteredLinks.map((link) => { // Changed to filteredLinks.map
+                {filteredLinks.map((link) => {
                     const Icon = link.icon;
                     const isActive = pathname === link.href;
 
@@ -77,7 +92,10 @@ export default function Sidebar() {
             </nav>
 
             <div className="p-4 border-t border-white/10">
-                <button className="flex items-center gap-3 px-4 py-3 w-full text-red-500 hover:bg-red-500/10 rounded-xl transition-colors font-medium text-sm">
+                <button
+                    onClick={handleSignOut}
+                    className="flex items-center gap-3 px-4 py-3 w-full text-red-500 hover:bg-red-500/10 rounded-xl transition-colors font-medium text-sm"
+                >
                     <LogOut size={20} />
                     Sign Out
                 </button>

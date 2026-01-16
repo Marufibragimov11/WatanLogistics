@@ -10,7 +10,7 @@ const navLinks = [
     { name: "Services", href: "#services" },
     { name: "Why Choose Us", href: "#why-choose-us" },
     { name: "Process", href: "#process" },
-    { name: "Contact", href: "#contact" },
+    { name: "Contact Us", href: "#contact" },
 ];
 
 export default function Navbar() {
