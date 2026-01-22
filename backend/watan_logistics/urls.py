@@ -9,9 +9,12 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/dashboard/stats/', DashboardStatsView.as_view(), name='dashboard-stats'),
+    path('api/', include('core.urls')),
     path('api/admin/', include('accounts.urls')),
     path('api/fleet/', include('fleet.urls')),
     path('api/drivers/', include('drivers.urls')),
+    path('api/dispatch/', include('dispatch.urls')),
+    path('api/load-history/', include('load_history.urls')),
 ]
 
 if settings.DEBUG:

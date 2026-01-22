@@ -20,7 +20,7 @@ const links = [
     { name: "User Management", href: "/dashboard/users", icon: Users },
     { name: "Fleet Management", href: "/dashboard/fleet", icon: Truck },
     { name: "Drivers", href: "/dashboard/drivers", icon: Contact2 },
-    { name: "Dispatch Board", href: "/dashboard/dispatch", icon: MapPin },
+    { name: "Update Board", href: "/dashboard/dispatch", icon: MapPin },
     { name: "Load History", href: "/dashboard/loads", icon: FileText },
     { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];

@@ -1,6 +1,7 @@
 "use client";
 
 import StatCard from "@/components/dashboard/StatCard";
+import CompanyInfoCard from "@/components/dashboard/CompanyInfoCard";
 import { Users, Truck, Activity, DollarSign, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -48,26 +49,10 @@ export default function DashboardPage() {
                 />
             </motion.div>
 
-            {/* Quick Actions / Recent Activity Placeholder */}
+            {/* Company Info & Status */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 bg-[#1A1A23] border border-white/5 rounded-2xl p-6">
-                    <h3 className="font-bold text-lg mb-4">Recent Activity</h3>
-                    <div className="space-y-4">
-                        {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
-                                        <Activity size={18} className="text-steel-gray" />
-                                    </div>
-                                    <div>
-                                        <p className="font-medium text-sm">Load #293{i} delivered successfully</p>
-                                        <p className="text-xs text-steel-gray">2 hours ago</p>
-                                    </div>
-                                </div>
-                                <span className="text-xs font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded">Completed</span>
-                            </div>
-                        ))}
-                    </div>
+                <div className="lg:col-span-2">
+                    <CompanyInfoCard />
                 </div>
 
                 <div className="bg-primary-navy rounded-2xl p-6 text-white relative overflow-hidden">

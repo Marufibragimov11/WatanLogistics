@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'django_filters',
 
     # Local Apps
     'accounts',
@@ -31,6 +32,8 @@ INSTALLED_APPS = [
     'core',
     'fleet',
     'drivers',
+    'dispatch',
+    'load_history',
 ]
 
 

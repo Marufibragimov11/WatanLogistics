@@ -27,7 +27,13 @@ class CustomObtainAuthToken(ObtainAuthToken):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser] 
+    permission_classes = [permissions.IsAuthenticated] # Changed from IsAdminUser to allow logic
+    filterset_fields = ['role']
+
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [permissions.IsAdminUser()]
+        return [permissions.IsAuthenticated()]
     
     @action(detail=True, methods=['post'], url_path='reset-password')
     def reset_password(self, request, pk=None):
