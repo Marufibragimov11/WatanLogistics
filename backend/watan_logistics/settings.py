@@ -159,12 +159,14 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-replace-me-in-production')
-DEBUG = False # Set to False for Production
+
+# Set DEBUG to False for production to ensure Cloudinary takes over
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
-    # 1. MOVE THIS TO THE VERY TOP - THIS IS THE FIX
-    'cloudinary_storage', 
+    # 1. Cloudinary storage MUST be at the very top to override defaults
+    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -202,7 +204,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'watan_logistics.urls'
-
 WSGI_APPLICATION = 'watan_logistics.wsgi.application'
 
 DATABASES = {
@@ -218,21 +219,22 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# Media Configuration
+# Media Configuration - This forces the connection to Cloudinary
 MEDIA_URL = '/media/'
-# Force Django to use Cloudinary for ALL media uploads
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_NAME'),
     'API_KEY': os.getenv('CLOUDINARY_KEY'),
-    'API_SECRET': os.getenv('CLOCUDINARY_SECRET') # Ensure this typo 'CLOCUDINARY' isn't in your Railway var!
+    'API_SECRET': os.getenv('CLOUDINARY_SECRET')
 }
 
-# Rest of your standard settings...
+# Authentication & Other Settings
 AUTH_USER_MODEL = 'accounts.User'
 CORS_ALLOW_ALL_ORIGINS = True 
 CSRF_TRUSTED_ORIGINS = ['https://*.railway.app', 'https://*.vercel.app']
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
