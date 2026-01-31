@@ -6,13 +6,14 @@ import { Edit2, Save, X, Trash2 } from "lucide-react";
 interface LoadHistoryTableProps {
     loads: any[];
     drivers: any[];
+    trucks: any[];
     dispatchers: any[];
     role: string | null;
     onUpdate: (id: string, data: any) => Promise<void>;
     onDelete: (id: string) => Promise<void>;
 }
 
-export default function LoadHistoryTable({ loads, drivers, dispatchers, role, onUpdate, onDelete }: LoadHistoryTableProps) {
+export default function LoadHistoryTable({ loads, drivers, trucks, dispatchers, role, onUpdate, onDelete }: LoadHistoryTableProps) {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editData, setEditData] = useState<any>({});
 
