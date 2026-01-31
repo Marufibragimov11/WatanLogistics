@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import TruckCard from "@/components/dashboard/TruckCard";
 import TruckModal from "@/components/dashboard/TruckModal";
 import { Plus, Search, Truck } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function FleetPage() {
     const [trucks, setTrucks] = useState<any[]>([]);
@@ -17,7 +18,7 @@ export default function FleetPage() {
         setLoading(true);
         try {
             const token = localStorage.getItem("authToken");
-            const res = await fetch("http://127.0.0.1:8000/api/fleet/trucks/", {
+            const res = await fetch(`${API_BASE_URL}/api/fleet/trucks/`, {
                 headers: { "Authorization": `Token ${token}` }
             });
             if (res.ok) {
@@ -40,8 +41,8 @@ export default function FleetPage() {
     const handleCreateUpdate = async (formData: FormData) => {
         const token = localStorage.getItem("authToken");
         const url = selectedTruck
-            ? `http://127.0.0.1:8000/api/fleet/trucks/${selectedTruck.id}/`
-            : "http://127.0.0.1:8000/api/fleet/trucks/";
+            ? `${API_BASE_URL}/api/fleet/trucks/${selectedTruck.id}/`
+            : `${API_BASE_URL}/api/fleet/trucks/`;
 
         const method = selectedTruck ? "PUT" : "POST";
 
@@ -66,7 +67,7 @@ export default function FleetPage() {
         if (!confirm("Are you sure you want to delete this truck?")) return;
 
         const token = localStorage.getItem("authToken");
-        await fetch(`http://127.0.0.1:8000/api/fleet/trucks/${id}/`, {
+        await fetch(`${API_BASE_URL}/api/fleet/trucks/${id}/`, {
             method: "DELETE",
             headers: { "Authorization": `Token ${token}` }
         });

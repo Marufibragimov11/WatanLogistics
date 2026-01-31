@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { API_BASE_URL } from "@/lib/api";
 
 interface CreateDispatchModalProps {
     isOpen: boolean;
@@ -42,8 +43,8 @@ export default function CreateDispatchModal({ isOpen, onClose, onSubmit }: Creat
 
         try {
             const [trucksRes, driversRes] = await Promise.all([
-                fetch("http://127.0.0.1:8000/api/fleet/trucks/", { headers }),
-                fetch("http://127.0.0.1:8000/api/drivers/", { headers }),
+                fetch(`${API_BASE_URL}/api/fleet/trucks/`, { headers }),
+                fetch(`${API_BASE_URL}/api/drivers/`, { headers }),
             ]);
 
             if (trucksRes.ok) setTrucks(await trucksRes.json());

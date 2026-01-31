@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import CreateDispatchModal from "@/components/dashboard/CreateDispatchModal";
 import DispatchTable from "@/components/dashboard/DispatchTable";
 import { Plus, Search, MapPin } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function DispatchPage() {
     const [dispatchItems, setDispatchItems] = useState<any[]>([]);
@@ -16,7 +17,7 @@ export default function DispatchPage() {
         setLoading(true);
         try {
             const token = localStorage.getItem("authToken");
-            const res = await fetch("http://127.0.0.1:8000/api/dispatch/", {
+            const res = await fetch(`${API_BASE_URL}/api/dispatch/`, {
                 headers: { "Authorization": `Token ${token}` }
             });
             if (res.ok) {
@@ -38,7 +39,7 @@ export default function DispatchPage() {
 
     const handleCreate = async (data: any) => {
         const token = localStorage.getItem("authToken");
-        const res = await fetch("http://127.0.0.1:8000/api/dispatch/", {
+        const res = await fetch(`${API_BASE_URL}/api/dispatch/`, {
             method: "POST",
             headers: {
                 "Authorization": `Token ${token}`,
@@ -57,7 +58,7 @@ export default function DispatchPage() {
 
     const handleUpdate = async (id: string, data: any) => {
         const token = localStorage.getItem("authToken");
-        const res = await fetch(`http://127.0.0.1:8000/api/dispatch/${id}/`, {
+        const res = await fetch(`${API_BASE_URL}/api/dispatch/${id}/`, {
             method: "PATCH",
             headers: {
                 "Authorization": `Token ${token}`,
@@ -77,7 +78,7 @@ export default function DispatchPage() {
     const handleDelete = async (id: string) => {
         if (!confirm("Are you sure you want to delete this dispatch record?")) return;
         const token = localStorage.getItem("authToken");
-        const res = await fetch(`http://127.0.0.1:8000/api/dispatch/${id}/`, {
+        const res = await fetch(`${API_BASE_URL}/api/dispatch/${id}/`, {
             method: "DELETE",
             headers: { "Authorization": `Token ${token}` }
         });

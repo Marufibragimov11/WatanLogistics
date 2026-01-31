@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import DriverCard from "@/components/dashboard/DriverCard";
 import DriverModal from "@/components/dashboard/DriverModal";
 import { Plus, Search, UserX } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function DriversPage() {
     const [drivers, setDrivers] = useState<any[]>([]);
@@ -18,7 +19,7 @@ export default function DriversPage() {
         setLoading(true);
         try {
             const token = localStorage.getItem("authToken");
-            const res = await fetch("http://127.0.0.1:8000/api/drivers/", {
+            const res = await fetch(`${API_BASE_URL}/api/drivers/`, {
                 headers: { "Authorization": `Token ${token}` }
             });
             if (res.ok) {
@@ -44,8 +45,8 @@ export default function DriversPage() {
     const handleCreateUpdate = async (formData: FormData) => {
         const token = localStorage.getItem("authToken");
         const url = selectedDriver
-            ? `http://127.0.0.1:8000/api/drivers/${selectedDriver.id}/`
-            : "http://127.0.0.1:8000/api/drivers/";
+            ? `${API_BASE_URL}/api/drivers/${selectedDriver.id}/`
+            : `${API_BASE_URL}/api/drivers/`;
 
         const method = selectedDriver ? "PUT" : "POST";
 
@@ -69,7 +70,7 @@ export default function DriversPage() {
         if (!confirm("Are you sure you want to delete this driver?")) return;
 
         const token = localStorage.getItem("authToken");
-        await fetch(`http://127.0.0.1:8000/api/drivers/${id}/`, {
+        await fetch(`${API_BASE_URL}/api/drivers/${id}/`, {
             method: "DELETE",
             headers: { "Authorization": `Token ${token}` }
         });

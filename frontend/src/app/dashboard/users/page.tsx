@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Plus, Search, Edit2, Trash2, Key } from "lucide-react";
 import UserModal from "@/components/dashboard/UserModal";
+import { API_BASE_URL } from "@/lib/api";
 
 interface User {
     id: number;
@@ -22,7 +23,7 @@ export default function UsersPage() {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem("authToken");
-            const res = await fetch("http://127.0.0.1:8000/api/admin/users/", {
+            const res = await fetch(`${API_BASE_URL}/api/admin/users/`, {
                 headers: { "Authorization": `Token ${token}` }
             });
             if (res.ok) {
@@ -43,8 +44,8 @@ export default function UsersPage() {
     const handleCreateUpdate = async (data: any) => {
         const token = localStorage.getItem("authToken");
         const url = selectedUser
-            ? `http://127.0.0.1:8000/api/admin/users/${selectedUser.id}/`
-            : "http://127.0.0.1:8000/api/admin/users/";
+            ? `${API_BASE_URL}/api/admin/users/${selectedUser.id}/`
+            : `${API_BASE_URL}/api/admin/users/`;
 
         const method = selectedUser ? "PUT" : "POST";
 
@@ -70,7 +71,7 @@ export default function UsersPage() {
         if (!confirm("Are you sure you want to delete this user?")) return;
 
         const token = localStorage.getItem("authToken");
-        await fetch(`http://127.0.0.1:8000/api/admin/users/${id}/`, {
+        await fetch(`${API_BASE_URL}/api/admin/users/${id}/`, {
             method: "DELETE",
             headers: { "Authorization": `Token ${token}` }
         });
@@ -88,7 +89,7 @@ export default function UsersPage() {
         }
 
         const token = localStorage.getItem("authToken");
-        const res = await fetch(`http://127.0.0.1:8000/api/admin/users/${id}/reset-password/`, {
+        const res = await fetch(`${API_BASE_URL}/api/admin/users/${id}/reset-password/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

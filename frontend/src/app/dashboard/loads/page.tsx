@@ -6,6 +6,7 @@ import LoadFilters from "@/components/dashboard/loads/LoadFilters";
 import LoadSummary from "@/components/dashboard/loads/LoadSummary";
 import AddLoadModal from "@/components/dashboard/loads/AddLoadModal";
 import { Plus } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function LoadHistoryPage() {
     const [loads, setLoads] = useState<any[]>([]);
@@ -65,7 +66,7 @@ export default function LoadHistoryPage() {
     const fetchDrivers = async () => {
         const token = localStorage.getItem("authToken");
         try {
-            const res = await fetch("http://127.0.0.1:8000/api/drivers/", {
+            const res = await fetch(`${API_BASE_URL}/api/drivers/`, {
                 headers: { "Authorization": `Token ${token}` }
             });
             if (res.ok) setDrivers(await res.json());
@@ -78,13 +79,13 @@ export default function LoadHistoryPage() {
         const token = localStorage.getItem("authToken");
         try {
             // Fetch users with roles that can dispatch - Endpoint is under api/admin/users/
-            const res = await fetch("http://127.0.0.1:8000/api/admin/users/?role=dispatch", {
+            const res = await fetch(`${API_BASE_URL}/api/admin/users/?role=dispatch`, {
                 headers: { "Authorization": `Token ${token}` }
             });
-            const res2 = await fetch("http://127.0.0.1:8000/api/admin/users/?role=admin", {
+            const res2 = await fetch(`${API_BASE_URL}/api/admin/users/?role=admin`, {
                 headers: { "Authorization": `Token ${token}` }
             });
-            const res3 = await fetch("http://127.0.0.1:8000/api/admin/users/?role=manager", {
+            const res3 = await fetch(`${API_BASE_URL}/api/admin/users/?role=manager`, {
                 headers: { "Authorization": `Token ${token}` }
             });
 
@@ -104,7 +105,7 @@ export default function LoadHistoryPage() {
     const fetchTrucks = async () => {
         const token = localStorage.getItem("authToken");
         try {
-            const res = await fetch("http://127.0.0.1:8000/api/fleet/trucks/", {
+            const res = await fetch(`${API_BASE_URL}/api/fleet/trucks/`, {
                 headers: { "Authorization": `Token ${token}` }
             });
             if (res.ok) setTrucks(await res.json());
@@ -116,7 +117,7 @@ export default function LoadHistoryPage() {
     const fetchLoads = async () => {
         setLoading(true);
         const token = localStorage.getItem("authToken");
-        let url = "http://127.0.0.1:8000/api/load-history/?";
+        let url = `${API_BASE_URL}/api/load-history/?`;
 
         if (filters.driver) url += `driver=${filters.driver}&`;
         if (filters.dispatcher) url += `dispatcher=${filters.dispatcher}&`;
@@ -138,7 +139,7 @@ export default function LoadHistoryPage() {
 
     const fetchAnalytics = async () => {
         const token = localStorage.getItem("authToken");
-        let url = "http://127.0.0.1:8000/api/load-history/analytics/?";
+        let url = `${API_BASE_URL}/api/load-history/analytics/?`;
 
         if (filters.driver) url += `driver=${filters.driver}&`;
         if (filters.dispatcher) url += `dispatcher=${filters.dispatcher}&`;
@@ -160,7 +161,7 @@ export default function LoadHistoryPage() {
     const handleSaveLoad = async (formData: FormData) => {
         const token = localStorage.getItem("authToken");
         try {
-            const res = await fetch("http://127.0.0.1:8000/api/load-history/", {
+            const res = await fetch(`${API_BASE_URL}/api/load-history/`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Token ${token}`
@@ -181,7 +182,7 @@ export default function LoadHistoryPage() {
     const handleUpdate = async (id: string, data: any) => {
         const token = localStorage.getItem("authToken");
         try {
-            const res = await fetch(`http://127.0.0.1:8000/api/load-history/${id}/`, {
+            const res = await fetch(`${API_BASE_URL}/api/load-history/${id}/`, {
                 method: "PATCH",
                 headers: {
                     "Authorization": `Token ${token}`,
@@ -199,7 +200,7 @@ export default function LoadHistoryPage() {
         if (!confirm("Delete this load history record?")) return;
         const token = localStorage.getItem("authToken");
         try {
-            const res = await fetch(`http://127.0.0.1:8000/api/load-history/${id}/`, {
+            const res = await fetch(`${API_BASE_URL}/api/load-history/${id}/`, {
                 method: "DELETE",
                 headers: { "Authorization": `Token ${token}` }
             });

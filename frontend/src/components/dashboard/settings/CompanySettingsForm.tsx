@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Building2, Save, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 interface CompanyData {
     company_name: string;
@@ -29,7 +30,7 @@ export default function CompanySettingsForm({ role }: { role: string | null }) {
         const fetchData = async () => {
             const token = localStorage.getItem("authToken");
             try {
-                const res = await fetch("http://127.0.0.1:8000/api/company/", {
+                const res = await fetch(`${API_BASE_URL}/api/company/`, {
                     headers: { "Authorization": `Token ${token}` }
                 });
                 if (res.ok) {
@@ -55,7 +56,7 @@ export default function CompanySettingsForm({ role }: { role: string | null }) {
 
         const token = localStorage.getItem("authToken");
         try {
-            const res = await fetch("http://127.0.0.1:8000/api/company/", {
+            const res = await fetch(`${API_BASE_URL}/api/company/`, {
                 method: "PATCH",
                 headers: {
                     "Authorization": `Token ${token}`,

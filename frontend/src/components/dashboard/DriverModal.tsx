@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { X, Upload, User, Truck } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { API_BASE_URL } from "@/lib/api";
 
 interface DriverModalProps {
     isOpen: boolean;
@@ -39,7 +40,7 @@ export default function DriverModal({ isOpen, onClose, onSubmit, initialData }: 
         const fetchTrucks = async () => {
             try {
                 const token = localStorage.getItem("authToken");
-                const res = await fetch("http://127.0.0.1:8000/api/fleet/trucks/", {
+                const res = await fetch(`${API_BASE_URL}/api/fleet/trucks/`, {
                     headers: { "Authorization": `Token ${token}` }
                 });
                 if (res.ok) {

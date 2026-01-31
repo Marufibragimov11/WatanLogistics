@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Building2, MapPin, Phone, Mail, FileBadge, Copy, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { API_BASE_URL } from "@/lib/api";
 
 interface CompanyData {
     company_name: string;
@@ -22,7 +23,7 @@ export default function CompanyInfoCard() {
         const fetchData = async () => {
             const token = localStorage.getItem("authToken");
             try {
-                const res = await fetch("http://127.0.0.1:8000/api/company/", {
+                const res = await fetch(`${API_BASE_URL}/api/company/`, {
                     headers: { "Authorization": `Token ${token}` }
                 });
                 if (res.ok) {
