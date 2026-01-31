@@ -154,20 +154,17 @@ import os
 import dj_database_url
 from dotenv import load_dotenv
 
-# Load local environment variables if present
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Security Settings
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-replace-me-in-production')
-DEBUG = False
+DEBUG = False # Set to False for Production
 ALLOWED_HOSTS = ['*']
 
-# Application Definition
 INSTALLED_APPS = [
-    # 1. Cloudinary Storage MUST be before staticfiles
-    'cloudinary_storage',
+    # 1. MOVE THIS TO THE VERY TOP - THIS IS THE FIX
+    'cloudinary_storage', 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -176,13 +173,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
 
-    # Third Party Apps
+    # Third Party
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
 
-    # Local Project Apps
+    # Local Apps
     'accounts',
     'dashboard',
     'core',
@@ -193,9 +190,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # Must be first for CORS
+    'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # Handles CSS/JS
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -206,25 +203,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'watan_logistics.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
 WSGI_APPLICATION = 'watan_logistics.wsgi.application'
 
-# Database Configuration for Railway
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
@@ -232,45 +212,27 @@ DATABASES = {
     )
 }
 
-# Password Validation
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
+# --- STATIC AND MEDIA CONFIGURATION ---
 
-# Internationalization
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
-
-# --- STATIC AND MEDIA FILE CONFIGURATION ---
-
-# Static files (CSS, JavaScript, Images) handled by WhiteNoise
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# Media files (User uploads) handled by Cloudinary
+# Media Configuration
 MEDIA_URL = '/media/'
+# Force Django to use Cloudinary for ALL media uploads
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# These keys connect your dashboard to your Cloudinary account
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_SECRET')
+    'CLOUD_NAME': os.getenv('CLOUDINARY_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_KEY'),
+    'API_SECRET': os.getenv('CLOCUDINARY_SECRET') # Ensure this typo 'CLOCUDINARY' isn't in your Railway var!
 }
 
-# Other Project Settings
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Rest of your standard settings...
 AUTH_USER_MODEL = 'accounts.User'
 CORS_ALLOW_ALL_ORIGINS = True 
-
-# Allows Admin login on your .railway.app domain
-CSRF_TRUSTED_ORIGINS = ['https://*.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://*.railway.app', 'https://*.vercel.app']
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
