@@ -1,6 +1,9 @@
 from pathlib import Path
 import os
+import dj_database_url
+
 from dotenv import load_dotenv
+
 
 load_dotenv()
 
@@ -8,7 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-replace-me-in-production')
 
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+# DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -68,15 +72,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'watan_logistics.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'watan_db',
+#         'USER': 'postgres',
+#         'PASSWORD': '6711',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'watan_db',
-        'USER': 'postgres',
-        'PASSWORD': '6711',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -103,7 +114,8 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -112,6 +124,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
 
 CORS_ALLOW_ALL_ORIGINS = True  # For dev only
+
+# This allows the Admin login to work on Railway
+CSRF_TRUSTED_ORIGINS = ['https://*.railway.app']
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
