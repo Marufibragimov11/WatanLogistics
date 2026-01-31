@@ -159,13 +159,12 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-replace-me-in-production')
-
-# Set DEBUG to False for production to ensure Cloudinary takes over
-DEBUG = False
+DEBUG = False 
 ALLOWED_HOSTS = ['*']
 
+# --- APP CONFIGURATION ---
 INSTALLED_APPS = [
-    # 1. Cloudinary storage MUST be at the very top to override defaults
+    # 1. Cloudinary storage MUST be at the very top to take over media
     'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -174,14 +173,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cloudinary',
-
-    # Third Party
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
-
-    # Local Apps
     'accounts',
     'dashboard',
     'core',
@@ -192,7 +187,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware', 
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -204,6 +199,23 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'watan_logistics.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 WSGI_APPLICATION = 'watan_logistics.wsgi.application'
 
 DATABASES = {
@@ -214,26 +226,29 @@ DATABASES = {
 }
 
 # --- STATIC AND MEDIA CONFIGURATION ---
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# Media Configuration - This forces the connection to Cloudinary
+# This fixes the "0 static files copied" error by giving Django a source folder
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Media Configuration for Cloudinary
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_NAME'),
     'API_KEY': os.getenv('CLOUDINARY_KEY'),
-    'API_SECRET': os.getenv('CLOUDINARY_SECRET')
+    'API_SECRET': os.getenv('CLOCUDINARY_SECRET')
 }
 
-# Authentication & Other Settings
+# --- OTHER SETTINGS ---
 AUTH_USER_MODEL = 'accounts.User'
 CORS_ALLOW_ALL_ORIGINS = True 
 CSRF_TRUSTED_ORIGINS = ['https://*.railway.app', 'https://*.vercel.app']
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
@@ -241,6 +256,5 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
     ],
 }
