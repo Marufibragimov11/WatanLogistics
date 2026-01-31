@@ -162,17 +162,14 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-replace-me-in-production')
 DEBUG = False 
 ALLOWED_HOSTS = ['*']
 
-# --- APP CONFIGURATION ---
 INSTALLED_APPS = [
-    # 1. Cloudinary storage MUST be at the very top to take over media
-    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary',
+    'storages', # Required for Amazon S3
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
@@ -203,7 +200,7 @@ ROOT_URLCONF = 'watan_logistics.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -225,25 +222,24 @@ DATABASES = {
     )
 }
 
-# --- STATIC AND MEDIA CONFIGURATION ---
+# --- STATIC FILES (WhiteNoise) ---
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# This fixes the "0 static files copied" error by giving Django a source folder
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+# --- MEDIA FILES (Amazon S3) ---
+# Replacing Cloudinary with S3 storage backend
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-# Media Configuration for Cloudinary
-MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = 'us-east-1' # Update this to your bucket's region
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_DEFAULT_ACL = 'public-read'
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_NAME'),
-    'API_KEY': os.getenv('CLOUDINARY_KEY'),
-    'API_SECRET': os.getenv('CLOCUDINARY_SECRET')
-}
+# This ensures your frontend gets the full Amazon URL for images
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
 # --- OTHER SETTINGS ---
 AUTH_USER_MODEL = 'accounts.User'
@@ -256,5 +252,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ],
 }

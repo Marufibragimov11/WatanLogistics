@@ -4,6 +4,13 @@ import { motion } from "framer-motion";
 import { ArrowRight, Truck, Shield, Clock } from "lucide-react";
 
 export default function Hero() {
+    const scrollToSection = (id: string) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     return (
         <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
             {/* Background Image with Overlay */}
@@ -41,7 +48,8 @@ export default function Hero() {
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="px-8 py-4 bg-primary-crimson text-white rounded-lg font-bold flex items-center justify-center gap-2 group shadow-lg shadow-primary-crimson/20"
+                                onClick={() => scrollToSection('contact')}
+                                className="px-8 py-4 bg-primary-crimson text-white rounded-lg font-bold flex items-center justify-center gap-2 group shadow-lg shadow-primary-crimson/20 hover:opacity-90 transition-opacity"
                             >
                                 Join Us
                                 <ArrowRight className="group-hover:translate-x-1 transition-transform" />
@@ -49,7 +57,8 @@ export default function Hero() {
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="px-8 py-4 border border-white/20 hover:bg-white/5 backdrop-blur-sm text-white rounded-lg font-bold"
+                                onClick={() => scrollToSection('services')}
+                                className="px-8 py-4 border border-white/20 hover:bg-white/10 backdrop-blur-sm text-white rounded-lg font-bold transition-colors"
                             >
                                 Our Services
                             </motion.button>
