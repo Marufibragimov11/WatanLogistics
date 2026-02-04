@@ -52,7 +52,7 @@ export default function Contact() {
                                 </div>
                                 <div>
                                     <p className="text-sm text-steel-gray">Company Address</p>
-                                    <p className="text-lg font-bold">81 Colonial Hills Dr, Akron, OH 44310</p>
+                                    <p className="text-lg font-bold">6500 Emerald Pkwy, Suit 100, Dublin, OH 43016</p>
                                 </div>
                             </div>
                         </div>

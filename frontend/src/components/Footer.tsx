@@ -63,7 +63,7 @@ export default function Footer() {
                             </li>
                             <li className="flex items-start gap-3">
                                 <span className="text-primary-crimson font-bold">A:</span>
-                                <span>81 Colonial Hills Dr, Akron, OH 44310</span>
+                                <span>6500 Emerald Pkwy, Suit 100, Dublin, OH 43016</span>
                             </li>
                         </ul>
                     </div>
